@@ -1,0 +1,93 @@
+﻿@model List<Cities>
+@*@model LogisticsDemo.Models.Cities*@
+@using LogisticsDemo.Enums
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+</head>
+
+<body>
+    <form method="post" asp-controller="Home" asp-action="Index">
+
+        <select name="fromCity" asp-items="@(new SelectList(Model,"Name","Name"))" id="fromCity">
+            <option>Please select</option>
+        </select>
+        @*@foreach (var x in Model)
+        {<li>@x.Name</li>}*@
+
+        <select name="toCity" asp-items="@(new SelectList(Model,"Name","Name"))" id="toCity">
+            <option>Please select</option>
+        </select>
+        <label for="zone">Zone:</label>
+        <input type="text" id="zone" name="zone" readonly="true">
+
+        <input type="submit" value="Submit" />
+
+    </form>
+</body>
+
+</html>
+<script>
+
+    $(document).ready(function () {
+        let city = [
+            ["Delhi", "Jaipur", "Lucknow", "Srinagar"],
+            ["Bengaluru",
+                "Chennai",
+                "Hyderabad",
+                "Cochin"],
+            ["Kolkatta",
+                "Bhuvaneshwar",
+                "Jaipur",
+                "Gangtok"],
+            ["Mumbai",
+                "Pune",
+                "Surat",
+                "Ahmedabad"]
+        ]
+        function getZone(fromCity, toCity) {
+            console.log(fromCity);
+            console.log(toCity);
+            let fromIndex = -1;
+            let toIndex = -1;
+            for (let i = 0; i < city.length; i++) {
+                for (let j = 0; j < city[i].length; j++) {
+                    if (city[i][j] == fromCity) {
+                        fromIndex = i;
+                    }
+                    if (city[i][j] == toCity) {
+                        toIndex = i;
+                    }
+                }
+            }
+            console.log(zone[fromIndex][toIndex]);
+            return zone[fromIndex][toIndex];
+        }
+        $("#toCity").change(function () {
+            @*$.ajax({
+                url: "/Home/getZone",
+                data: { "fromCity": fromCity.value, "toCity": toCity.value },
+                type: "Get",
+                success: function () {
+                    $('#zone').val("@ViewBag.zone");
+                    console.log("a"+"@ViewBag.zone");
+                }
+            })*@
+            let zone = [["Z1", "Z2", "Z2", "Z3"],
+            ["Z2", "Z1", "Z2", "Z3"],
+            ["Z2", "Z2", "Z3", "Z3"],
+            ["Z3", "Z2", "Z3", "Z4"]]
+
+            $('#zone').val(getZone($("#fromCity").val(),$("#toCity").val()));
+        })
+    });
+</script>
